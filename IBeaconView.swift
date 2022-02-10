@@ -18,7 +18,14 @@ struct IbeaconView: View {
                 .font(.largeTitle)
                 .padding()
             Text(String(beaconDetector.currentBeacon?.rssi ?? -1))
-            List(beaconDetector.beaconHistory){ item in
+            
+            List(beaconDetector.beaconInfo["2"] ?? []){ item in
+                beaconDetialRow(item: item)
+            }
+            List(beaconDetector.beaconInfo["3"] ?? []){ item in
+                beaconDetialRow(item: item)
+            }
+            List(beaconDetector.beaconInfo["4"] ?? []){ item in
                 beaconDetialRow(item: item)
             }
         }
@@ -27,9 +34,8 @@ struct IbeaconView: View {
     }
     
     func beaconDetialRow(item: BeaconDebugger.BeaconHistoryItem) -> some View {
-        VStack{
-            
-
+        print(item)
+        return  VStack{
             HStack{
                 HStack{
                     Text("Proximity: ")
@@ -37,10 +43,10 @@ struct IbeaconView: View {
                 }
                 Spacer()
                 VStack {
-    //                Text("UUID: \(item.beacon.uuid.uuidString)")
-    //                Text("Minor: \(item.beacon.minor)")
+                    //  Text("UUID: \(item.beacon.uuid.uuidString)")
+                    //  Text("Minor: \(item.beacon.minor)")
                     Text("Major: \(item.beacon.major)")
-                    Text("\(Date().description(with: Locale.current))")
+                    //  Text("\(Date().description(with: Locale.current))")
                 }
                 Spacer()
                 HStack{

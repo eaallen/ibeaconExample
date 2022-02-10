@@ -11,25 +11,26 @@ import SwiftUI
  
 class BeaconDebugger: BeaconBase {
     @Published var currentBeacon : CLBeacon? = nil
-    @Published var beaconHistory : [BeaconHistoryItem] = []
-    
+    @Published var beaconInfo : [
+        String : [BeaconHistoryItem]
+    ] = [:]
     override init(){
         super.init()
     }
     
     override func locationManager(_ manager: CLLocationManager, didRangeBeacons beacons: [CLBeacon], in region: CLBeaconRegion) {
         if beacons.count > 0 {
-            updateDistance(beacons[0])
+            updateDistance(beacons)
         } else {
             
         }
     }
     
-    func updateDistance(_ beacon: CLBeacon) {
-        currentBeacon = beacon
+    func updateDistance(_ beacons: [CLBeacon]) {
+        currentBeacon = beacons[0]
         // ensure we only add a value to the history list if there has been a change in rssi
-        if beaconHistory.isEmpty || beacon.rssi != beaconHistory[0].beacon.rssi{
-            beaconHistory.insert(BeaconHistoryItem(beacon: beacon), at: 0)
+        for beacon in beacons{
+            beaconInfo["\(beacon.major)"] = [BeaconHistoryItem(beacon: beacon)]
         }
     }
     
